@@ -1,125 +1,109 @@
 # Kurly Commerce Platform
 
-A portfolio-oriented ecommerce platform inspired by Kurly's product experience, delivery-centric commerce flow, and operational scale.
+마켓컬리의 상품 경험, 배송 중심 커머스 흐름, 그리고 운영 규모를 참고하여 만든 포트폴리오용 이커머스 플랫폼입니다.
 
-This repository is organized as a monorepo and is currently focused on establishing a clean engineering foundation across backend, frontend, infrastructure, and documentation. The current stage contains project scaffolding and environment setup only. Business features are intentionally deferred until the base architecture is stable.
+이 저장소는 모노레포(monorepo) 구조로 구성되어 있으며, 현재는 백엔드, 프론트엔드, 인프라, 문서 전반에 걸친 **기본적인 엔지니어링 기반을 구축하는 단계**입니다.
+현재 단계에서는 프로젝트 구조와 환경 설정만 포함되어 있으며, 실제 비즈니스 기능은 **기반 아키텍처가 안정화된 이후에 구현할 예정**입니다.
 
-## Project Overview
+---
 
-The goal of this project is to build a modern commerce platform that demonstrates practical full-stack engineering skills across API design, data modeling, event-driven integration, frontend architecture, and local development infrastructure.
+## 프로젝트 개요
 
-This project is being structured to highlight:
+이 프로젝트의 목표는 API 설계, 데이터 모델링, 이벤트 기반 통합, 프론트엔드 아키텍처, 로컬 개발 환경까지 포함한 **실무형 풀스택 개발 역량을 보여주는 현대적인 커머스 플랫폼을 만드는 것**입니다.
 
-- Scalable backend design with Spring Boot
-- Modern frontend development with Next.js App Router
-- Local development infrastructure with Docker Compose
-- Clean separation of application, infrastructure, and documentation concerns
+이 프로젝트는 다음을 강조하기 위해 설계되었습니다:
 
-## Tech Stack
+* Spring Boot 기반의 확장 가능한 백엔드 설계
+* Next.js App Router 기반의 최신 프론트엔드 개발
+* Docker Compose를 활용한 로컬 개발 인프라
+* 애플리케이션 / 인프라 / 문서의 명확한 분리 구조
+
+---
+
+## 기술 스택
 
 ### Backend
 
-- Java 21
-- Gradle
-- Spring Boot 3.x
-- Spring Web
-- Spring Data JPA
-- QueryDSL
-- Spring Security
-- Spring Validation
-- MySQL
-- Redis
-- Kafka
-- Lombok
+* Java 21
+* Gradle
+* Spring Boot 3.x
+* Spring Web
+* Spring Data JPA
+* QueryDSL
+* Spring Security
+* Spring Validation
+* MySQL
+* Redis
+* Kafka
+* Lombok
+
+---
 
 ### Frontend
 
-- Next.js
-- React
-- TypeScript
-- App Router
-- Tailwind CSS
-- ESLint
+* Next.js
+* React
+* TypeScript
+* App Router
+* Tailwind CSS
+* ESLint
+
+---
 
 ### Infrastructure
 
-- Docker Compose
-- MySQL
-- Redis
-- Kafka
-- Zookeeper
-- Nginx
-- Kubernetes manifests for deployment placeholders
+* Docker Compose
+* MySQL
+* Redis
+* Kafka
+* Zookeeper
+* Nginx
+* Kubernetes 배포를 위한 매니페스트 (placeholder 수준)
 
-## Directory Structure
+---
 
-```text
-.
-|-- backend/
-|   |-- build.gradle
-|   |-- settings.gradle
-|   `-- src/
-|       |-- main/
-|       |   |-- java/com/kurly/commerce/
-|       |   |   |-- api/
-|       |   |   |-- domain/
-|       |   |   `-- infrastructure/
-|       |   `-- resources/
-|       `-- test/
-|-- frontend/
-|   |-- src/
-|   |   |-- app/
-|   |   |-- components/
-|   |   |-- features/
-|   |   |-- hooks/
-|   |   `-- lib/
-|   |-- package.json
-|   `-- tsconfig.json
-|-- infra/
-|   |-- docker-compose.yml
-|   |-- deployments/
-|   |-- k8s/
-|   `-- nginx/
-`-- docs/
-    |-- api/
-    |-- architecture.md
-    `-- deployment.md
-```
+## 개발 목표
 
-## Development Goals
+* 명확한 도메인 경계를 가진 유지보수 가능한 커머스 백엔드 구축
+* 확장 가능한 기능 개발을 고려한 프론트엔드 구조 설계
+* 데이터 저장, 캐싱, 메시징을 위한 로컬 인프라 구성
+* 향후 주문, 상품, 사용자, 프로모션 도메인 확장을 위한 코드 구조 준비
+* 실무 수준의 엔지니어링 방식을 포트폴리오 형태로 보여주기
 
-- Build a maintainable ecommerce backend with clear domain boundaries
-- Design a frontend structure suitable for scalable feature development
-- Establish local infrastructure for data storage, caching, and messaging
-- Prepare the codebase for future expansion into order, catalog, user, and promotion domains
-- Demonstrate production-minded engineering practices in a portfolio-friendly format
+---
 
-## How To Run
+## 실행 방법
 
-The project is currently in the scaffold stage, so the commands below are basic placeholders for local setup.
+현재는 초기 구조 단계이므로, 아래 명령어는 기본적인 로컬 실행용입니다.
 
-### 1. Start local infrastructure
+---
+
+### 1. 로컬 인프라 실행
 
 ```bash
 cd infra
 docker compose up -d
 ```
 
-### 2. Run backend
+---
+
+### 2. 백엔드 실행
 
 ```bash
 cd backend
 ./gradlew bootRun
 ```
 
-On Windows PowerShell:
+Windows PowerShell:
 
 ```powershell
 cd backend
 .\gradlew.bat bootRun
 ```
 
-### 3. Run frontend
+---
+
+### 3. 프론트엔드 실행
 
 ```bash
 cd frontend
@@ -127,18 +111,12 @@ npm install
 npm run dev
 ```
 
-## Current Status
+---
 
-- Monorepo structure initialized
-- Spring Boot backend base configuration added
-- Next.js frontend base configuration added
-- Local development Docker Compose added
-- Project documentation scaffolded
+## 향후 계획 (로드맵)
 
-## Roadmap
-
-- Core domain modeling
-- Authentication and authorization
-- Product, cart, and order flows
-- Event-driven integration with Kafka
-- Deployment pipeline and environment configuration
+* 핵심 도메인 모델링
+* 인증 및 인가 기능 구현
+* 상품 / 장바구니 / 주문 흐름 구현
+* Kafka 기반 이벤트 처리 구조 도입
+* 배포 파이프라인 및 환경 구성
