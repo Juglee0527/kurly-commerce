@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ../backend
+    container_name: kurly-backend
+    ports:
+      - "8080:8080"
+    profiles:
+      - app
+
+  frontend:
+    build:
+      context: ../frontend
+    container_name: kurly-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    profiles:
+      - app
+
+networks:
+  default:
+    name: kurly-commerce-network

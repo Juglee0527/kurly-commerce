@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kurly-backend
+  namespace: kurly-commerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kurly-backend
+  template:
+    metadata:
+      labels:
+        app: kurly-backend
+    spec:
+      containers:
+        - name: backend
+          image: kurly/backend:latest
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kurly-backend
+  namespace: kurly-commerce
+spec:
+  selector:
+    app: kurly-backend
+  ports:
+    - port: 8080
+      targetPort: 8080
