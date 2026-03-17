@@ -1,24 +1,90 @@
 services:
-  backend:
-    build:
-      context: ../backend
-    container_name: kurly-backend
+  mysql:
+    image: mysql:8.4
+    container_name: kurly-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kurly_commerce
+      MYSQL_USER: kurly
+      MYSQL_PASSWORD: kurly
     ports:
-      - "8080:8080"
-    profiles:
-      - app
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kurly-network
 
-  frontend:
-    build:
-      context: ../frontend
-    container_name: kurly-frontend
+  redis:
+    image: redis:7.4-alpine
+    container_name: kurly-redis
+    restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kurly-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: kurly-zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    healthcheck:
+      test: ["CMD-SHELL", "echo ruok | nc -w 2 localhost 2181 | grep imok || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kurly-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: kurly-kafka
+    restart: unless-stopped
     depends_on:
-      - backend
-    profiles:
-      - app
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list > /tmp/kafka-topics.out 2>&1 || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+    networks:
+      - kurly-network
+
+volumes:
+  mysql-data:
+  redis-data:
 
 networks:
-  default:
+  kurly-network:
     name: kurly-commerce-network
